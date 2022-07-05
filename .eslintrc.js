@@ -13,6 +13,10 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'space-before-function-paren': 'off'
+    'space-before-function-paren': 'off',
+    'no-tabs': 'warn',
+    'vue/multi-word-component-names': 'off',
+    'vue/valid-template-root':0,
+    'no-trailing-spaces':0
   }
 }
