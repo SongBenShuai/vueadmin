@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import store from '../store'
 const admin = axios.create({
   baseURL: process.env.VUE_APP_SERVICE_URL,
   timeout: 5000
@@ -7,6 +7,10 @@ const admin = axios.create({
 
 admin.interceptors.request.use(
   (config) => {
+    const authorization = store.getters.token
+    if (authorization) {
+      config.headers.Authorization = authorization
+    }
     return config
   },
   (error) => {

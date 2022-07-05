@@ -4,7 +4,7 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="ruleForm.username" />
       </el-form-item>
-      <el-form-item label="  密码" prop="password">
+      <el-form-item label="密码" type="password" prop="password">
         <el-input v-model="ruleForm.password" />
       </el-form-item>
       <el-form-item label="验证码" prop="code">
@@ -19,13 +19,16 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import { getCodes } from '../../api/login'
+import { getCodes, getLogin } from '../../api/login'
+// import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+// const store = useStore()
+const router = useRouter()
 const ruleFormRef = ref()
 const ruleForm = reactive({
   username: 'test',
-  password: '',
-  code: '',
-  token: ''
+  password: '1234567',
+  code: ''
 })
 const data = reactive({
   token: '',
@@ -55,11 +58,25 @@ getCode()
  */
 async function getlogins() {
   if (!ruleFormRef.value) return
-  await ruleFormRef.value.validate((valid) => {
+  await ruleFormRef.value.validate(async (valid) => {
     if (valid) {
-      console.log('!')
+      const res = await getLogin({
+        username: ruleForm.username,
+        password: ruleForm.password,
+        token: data.token,
+        code: ruleForm.code
+      })
+      console.log(res)
+      // store.commit('setToken', res.headers.authorization)
+      localStorage.setItem('token', res.headers.authorization)
+
+      if (res.data.code === 200) {
+        router.push('/')
+      } else {
+        alert(res.data.msg)
+      }
     } else {
-      console.log('error submit!')
+      alert('123')
     }
   })
 }
