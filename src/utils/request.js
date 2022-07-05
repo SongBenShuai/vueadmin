@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const admin = axios.create({
-  baseURL: '',
+  baseURL: process.env.VUE_APP_SERVICE_URL,
   timeout: 5000
 })
 
